@@ -1,0 +1,10 @@
+<div class="headerDay" >
+    <h3>{{weekday}}    {{day.getDate()}}.{{day.getMonth()+1}}.{{day.getFullYear()}}</h3>
+</div>
+<div *ngFor="let homework of homeworks">
+    <button class="homework"  >
+        <p>{{homework.fach}}</p>
+        <p>{{homework.description}}</p>
+        <p>{{homework.done}}</p>
+    </button>
+</div>

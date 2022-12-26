@@ -1,7 +1,7 @@
 <div class="containerMain">
   <header class="headerMain">
     <div class="titel">
-      <h1>Kalender Woche: </h1>
+      <h1>Kalender Woche: {{week}}</h1>
     </div>
     <nav class="navigation">
       <div class="buttonNav">
@@ -12,12 +12,19 @@
       </div>
     </nav>
   </header>
-  <main class="mainMain"></main>
+  <main class="mainMain" >
+      <app-day ></app-day>
+      <app-day ></app-day>
+      <app-day ></app-day>
+      <app-day ></app-day>
+      <app-day ></app-day>
+      <app-day ></app-day>
+  </main>
   <footer class="footerMain">
-    <div>
+    <div class="footerText">
       <p>Developed by Aurel Schmid</p>
     </div>
-    <div>
+    <div  class="footerText">
       <p>Version 0.5</p>
     </div>
   </footer>

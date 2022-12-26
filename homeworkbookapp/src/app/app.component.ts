@@ -15,6 +15,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.getHomeworks();
   }
+  today = new Date();
+  startDate = new Date(this.today.getFullYear(),0,1);
+  days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
+  week = Math.ceil(this.days / 7);
   
   public getHomeworks():void  {
     this.homeworkService.getHomeworks().subscribe(
