@@ -1,32 +1,120 @@
-<div class="containerMain">
-  <header class="headerMain">
-    <div class="titel">
-      <h1>Kalender Woche: {{week}}</h1>
-    </div>
-    <nav class="navigation">
-      <div class="buttonNav">
-        <button class="navigationButton">Sign In</button>
-        <button class="navigationButton">Sigin Up</button>
-        <button class="navigationButton">add</button>
-        <button class="navigationButton">Edit</button>
+<div class="containerWeek">
+  <button (click)="lastWeek()" class="last">last</button>
+  <div class="containerMain">
+    <header class="headerMain">
+      <div class="titel">
+        <h1>Kalender Woche: {{week}}</h1>
       </div>
-    </nav>
-  </header>
-  <main class="mainMain" >
-      <app-day type="date" [day]="monday"></app-day>
-      <app-day type="date" [day]="tuesday"></app-day>
-      <app-day type="date" [day]="wednesday"></app-day>
-      <app-day type="date" [day]="thursday"></app-day>
-      <app-day type="date" [day]="friday"></app-day>
-      <app-day type="date" [day]="weekend"></app-day>
+      <nav class="navigation">
+        <div class="buttonNav">
+          <button class="navigationButton">Sign In</button>
+          <button class="navigationButton">Sigin Up</button>
+          <button class="navigationButton" (click)="modalService.open('modal-add');">add</button>
+          <button class="navigationButton">Edit</button>
+        </div>
+      </nav>
+    </header>
+    <main class="mainMain" >
+        <app-day type="date" [day]="monday"></app-day>
+        <app-day type="date" [day]="tuesday"></app-day>
+        <app-day type="date" [day]="wednesday"></app-day>
+        <app-day type="date" [day]="thursday"></app-day>
+        <app-day type="date" [day]="friday"></app-day>
+        <app-day type="date" [day]="weekend"></app-day>
 
-  </main>
-  <footer class="footerMain">
-    <div class="footerText">
-      <p>Developed by Aurel Schmid</p>
-    </div>
-    <div  class="footerText">
-      <p>Version 0.5</p>
-    </div>
-  </footer>
+    </main>
+    <footer class="footerMain">
+      <div class="footerText">
+        <p>Developed by Aurel Schmid</p>
+      </div>
+      <div  class="footerText">
+        <p>Version 0.5</p>
+      </div>
+    </footer>
+  </div>
+
+  <button (click)="nextWeek()" class="next">next</button>
 </div>
+
+
+
+
+<jw-modal id="modal-add" >
+  <div class="PopUp">
+    <h1 >ADD HOMEWORK</h1>
+    <form #addForm="ngForm" (ngSubmit)="addHomework(addForm)">
+    <div class="flexContainer">
+      <p>dueDate</p>
+      <input name="dueDate" type="text" placeholder="2022-03-20" required>
+    </div>
+
+    <div class="flexContainer">
+      <label for="statusID">status</label> 
+      <select name="statusID" id="cars">
+        <option value=1>Homework</option>
+        <option value=2>test</option>
+        <option value=3>Tour</option>
+      </select>
+    </div>
+
+    <div class="flexContainer">
+      <p>description: </p>
+      <textarea id="description" name="description" rows="4" cols="50" maxlength="100">
+      </textarea>
+    </div>
+
+    <div class="flexContainer">
+      <p>subject</p>
+      <input name="fach" type="text">
+    </div>
+
+    <div class="flexContainer">
+      <p>is Done</p>
+      <input type="checkbox" name="isDone">
+    </div>
+
+    <div class="buttonPopup">
+        <button [disabled]="addForm.invalid"class ="navigationButton" (click)="modalService.close('modal-add');">save</button>
+    </div>
+    <input type="hidden" name="userID">
+  </form>
+  </div>
+</jw-modal>
+
+
+
+<form #addForm="ngForm" (ngSubmit)="addHomework(addForm)">
+  <div class="flexContainer">
+     <label for="dueDate">Due Date</label>
+     <input type="text" ngModel name="dueDate" class="form-control" id="dueDate" placeholder="dueDate" required>
+  </div>
+
+  <div class="flexContainer">
+     <label for="statusID"> Status</label>
+     <select ngModel name="statusID" id="statusID" required>
+      <option value=1>Homework</option>
+      <option value=2>test</option>
+      <option value=3>Tour</option>
+    </select>
+  </div>
+
+  <div class="flexContainer">
+    <label for="fach">subject</label>
+    <input type="text" ngModel name="fach" class="form-control" id="fach" placeholder="subject" required>
+ </div>
+
+  <div class="flexContainer">
+     <label for="description">description</label>
+     <input type="text" ngModel name="description" class="form-control" id="description" placeholder="description" required>
+  </div>
+
+  <div class="flexContainer">
+     <label for="isDone">is Done</label>
+     <input type="checkbox" ngModel name="isDone" class="form-control" id="isDone" placeholder="isDone" required>
+  </div>
+  <input type="hidden" name="userID" value=1>
+  <div class="buttonPopup">
+     <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+  </div>
+  </form>

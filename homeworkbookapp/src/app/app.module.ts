@@ -7,19 +7,30 @@ import { AppComponent } from './app.component';
 import { HomeworkService } from './homework.service';
 import { DayComponent } from './day/day.component';
 import { DaysDirective } from './days.directive';
-import { ModalComponent } from './modal/modal.component';
+import { ModalModule } from './_modal';
+import {MaterialExampleModule} from '../material.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     DayComponent,
     DaysDirective,
-    ModalComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
+    ModalModule,
+    BrowserAnimationsModule,
+    FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    MatNativeDateModule,
+    MaterialExampleModule,
+    ReactiveFormsModule,
+    
   ],
   providers: [HomeworkService],
   bootstrap: [AppComponent]

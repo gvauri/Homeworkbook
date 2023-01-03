@@ -1,9 +1,6 @@
 <div class="headerDay">
     <div >
-        <h3>{{weekdays[day.getDay()]}}    {{day | date: 'dd.MM.yy'}}</h3>
-    </div>
-    <div  *ngIf="weekdays[day.getDay()] == weekdays[5]">
-        <h3>-  {{day.getDate()}}.{{day.getMonth()+1}}.{{day.getFullYear()}}</h3>
+        <h3>{{weekdays[day.getDay()-1]}}    {{day | date: 'dd.MM.yy'}}</h3>
     </div>
 </div>
 <div *ngFor="let homework of homeworks">

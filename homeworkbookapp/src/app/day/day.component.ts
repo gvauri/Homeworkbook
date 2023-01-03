@@ -24,7 +24,6 @@ export class DayComponent implements OnInit{
     const day = dueDate.charAt(8)+dueDate.charAt(9);
     const month =  dueDate.charAt(5)+dueDate.charAt(6);
 
-
     return new Date( Number(year), Number(month)-1, Number(day));
   }
 
@@ -32,7 +31,6 @@ export class DayComponent implements OnInit{
     this.appComponent;
     this.getHomeworks();
   }
-
   
   public getHomeworks():void  {
     this.homeworkService.getHomeworks().subscribe(
@@ -43,20 +41,5 @@ export class DayComponent implements OnInit{
         alert(error.message);
       }
     );
-  }
-
-
-  public onOpenPopupAdd(homework: Homework, mode: String): void{
-    const container = document.getElementById('')
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal',)
-    if(mode === 'add'){
-      button.setAttribute('data-toggle', '#addHomeworkModal')
-    }
-    if(mode === 'update'){
-      button.setAttribute('data-toggle', '#updateHomeworkModal')
-    }
   }
 }

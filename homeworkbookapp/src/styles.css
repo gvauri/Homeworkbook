@@ -1,5 +1,12 @@
 
-
+.containerWeek{
+    display: grid;
+    grid-template-rows: auto ;
+    grid-template-columns: 50px auto 50px ;
+}
+.last , .next{
+    background-color:#04ba8d;
+}
 body {
     background-color:#4dbe94;
 }
@@ -7,6 +14,18 @@ body {
     display: grid;
     grid-row: 7% auto 3%;
     gap: 12px;
+}
+textarea{
+    resize: none;
+}
+.flexContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 30px;
+}
+.flexContainer :nth-child(0), .flexContainer :nth-child(1){
+margin: 20px;
 }
 .headerMain{
     min-height: 100px;
@@ -82,9 +101,21 @@ body {
     grid-template-columns: 30% 50% 20%;
     background-color:#05fabd;
 }
-
 .headerDay{
     display: flex;
+}
+.PopUp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+.buttonPopup{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 25px;
+    justify-content: center;
 }
 
 
