@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { HomeworkService } from './homework.service';
 import { DayComponent } from './day/day.component';
 import { DaysDirective } from './days.directive';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DayComponent,
-    DaysDirective
+    DaysDirective,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

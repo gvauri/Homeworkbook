@@ -1,10 +1,17 @@
-<div class="headerDay" >
-    <h3>{{weekday}}    {{day.getDate()}}.{{day.getMonth()+1}}.{{day.getFullYear()}}</h3>
+<div class="headerDay">
+    <div >
+        <h3>{{weekdays[day.getDay()]}}    {{day | date: 'dd.MM.yy'}}</h3>
+    </div>
+    <div  *ngIf="weekdays[day.getDay()] == weekdays[5]">
+        <h3>-  {{day.getDate()}}.{{day.getMonth()+1}}.{{day.getFullYear()}}</h3>
+    </div>
 </div>
 <div *ngFor="let homework of homeworks">
-    <button class="homework"  >
-        <p>{{homework.fach}}</p>
-        <p>{{homework.description}}</p>
-        <p>{{homework.done}}</p>
-    </button>
+    <div *ngIf="day.getFullYear() == convertToDate(homework.dueDate.toString()).getFullYear()  &&  day.getDate() == convertToDate(homework.dueDate.toString()).getDate()  &&  day.getMonth() == convertToDate(homework.dueDate.toString()).getMonth()">
+        <button class="homework"  >
+            <p>{{homework.fach}}</p>
+            <p>{{homework.description}}</p>
+            <p>{{homework.done}}</p>
+        </button>
+    </div>
 </div>
