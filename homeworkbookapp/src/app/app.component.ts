@@ -4,6 +4,8 @@ import { Homework } from './homework';
 import { HomeworkService } from './homework.service';
 import { ModalService } from './_modal';
 import {FormGroup, FormControl, NgForm} from '@angular/forms';
+import { LoginService } from './login.service';
+import { DayComponent } from './day/day.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,11 +14,12 @@ import {FormGroup, FormControl, NgForm} from '@angular/forms';
 
 
 export class AppComponent implements OnInit {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
+  userID = 1;
+  public editHomeworkid = 0;
+  public editHomework?: Homework;
   public homeworks: Homework[] = [];  
-  constructor(private homeworkService: HomeworkService, public modalService: ModalService) { };
+  updateForm: any;
+  constructor(private homeworkService: HomeworkService, public modalService: ModalService, public loginService: LoginService) { };
   ngOnInit(): void {
     this.getHomeworks();
   }
@@ -31,16 +34,7 @@ export class AppComponent implements OnInit {
   friday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+4);
   weekend =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+5);
 
-  public getHomeworks():void  {
-    this.homeworkService.getHomeworks().subscribe(
-      (response : Homework[]) => {
-        this.homeworks = response;
-      },
-      (error : HttpErrorResponse) =>{
-        alert(error.message);
-      }
-    );
-  }
+ 
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -63,6 +57,18 @@ export class AppComponent implements OnInit {
     this.friday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+4);
     this.weekend =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+5);
   }
+
+  public getHomeworks():void  {
+    this.homeworkService.getHomeworks().subscribe(
+      (response : Homework[]) => {
+        this.homeworks = response;
+      },
+      (error : HttpErrorResponse) =>{
+        alert(error.message);
+      }
+    );
+  }
+
   public addHomework(addForm: NgForm):void{
     document.getElementById('add-homework-form')?.click()
     this.homeworkService.addHomework(addForm.value).subscribe(
@@ -77,4 +83,28 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
+  public updateHomework(homework: Homework): void {
+    this.homeworkService.updateHomework(homework).subscribe(
+      (response: Homework) => {
+        console.log(response);
+        this.getHomeworks();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public getHomeworkByID(homeworkID: number):void{
+    this.homeworkService.getHomeworkByID(homeworkID).subscribe(
+      (response: Homework)=> {
+        this.editHomework = response;
+      },
+      (error : HttpErrorResponse) =>{
+        alert(error.message);
+      }
+    );
+  }
+  
 }

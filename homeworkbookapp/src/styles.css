@@ -1,4 +1,14 @@
-
+.invisible{
+    display: none;
+}
+.registrierenLink{
+    border-width: 0px;
+    background-color:rgba(220,160,140,0);
+    color: #04ba8d;
+}
+.registrierenLink:hover{
+    color:#002d22;
+}
 .containerWeek{
     display: grid;
     grid-template-rows: auto ;

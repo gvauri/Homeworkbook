@@ -5,7 +5,7 @@
 </div>
 <div *ngFor="let homework of homeworks">
     <div *ngIf="day.getFullYear() == convertToDate(homework.dueDate.toString()).getFullYear()  &&  day.getDate() == convertToDate(homework.dueDate.toString()).getDate()  &&  day.getMonth() == convertToDate(homework.dueDate.toString()).getMonth()">
-        <button class="homework"  >
+        <button class="homework" (click)=" setEditHomework(homework); " >
             <p>{{homework.fach}}</p>
             <p>{{homework.description}}</p>
             <p>{{homework.done}}</p>
