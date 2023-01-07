@@ -11,13 +11,32 @@ import { ModalService } from '../_modal';
   styleUrls: ['./day.component.css']
 })
 export class DayComponent implements OnInit{
-  
-  public homeworks: Homework[] = [];  
+    classHomework : string = "";
+  //public homeworks: Homework[] = [];
+  public setClassHomework(status: number): string{
+      if(status == 2){
+        this.classHomework = "test";
+      }else if(status == 3){
+        this.classHomework = "tour";
+      }else{
+        this.classHomework= "";
+      }
+      return this.classHomework;
+  } 
+  public setClassIsDone (isDone: boolean): string{
+    if(isDone){
+      this.classHomework = "isDone";
+    }else{
+      this.classHomework= "";
+    }
+    return this.classHomework;
+} 
   weekdays =  ["Monday", "Tuesday","Wednesday","Thursday","Friday","Weekend"];
   constructor(private appComponent: AppComponent, private homeworkService: HomeworkService,  public modalService: ModalService){};
 
 
   @Input() day!: Date;
+  @Input() homeworks?: Homework[];
 
   public convertToDate(dueDate : string): Date{
     const year = dueDate.charAt(0)+dueDate.charAt(1)+dueDate.charAt(2)+dueDate.charAt(3);
@@ -33,7 +52,7 @@ export class DayComponent implements OnInit{
   }
   
   public getHomeworks():void  {
-    this.homeworkService.getHomeworks().subscribe(
+    this.homeworkService.getHomeworksbyUserID().subscribe(
       (response : Homework[]) => {
         this.homeworks = response;
       },

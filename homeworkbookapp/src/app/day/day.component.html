@@ -5,10 +5,11 @@
 </div>
 <div *ngFor="let homework of homeworks">
     <div *ngIf="day.getFullYear() == convertToDate(homework.dueDate.toString()).getFullYear()  &&  day.getDate() == convertToDate(homework.dueDate.toString()).getDate()  &&  day.getMonth() == convertToDate(homework.dueDate.toString()).getMonth()">
-        <button class="homework" (click)=" setEditHomework(homework); " >
+        <button class="homework {{setClassIsDone(homework.done)}}" id="{{setClassHomework(homework.statusID)}}" (click)=" setEditHomework(homework);" >
             <p>{{homework.fach}}</p>
             <p>{{homework.description}}</p>
-            <p>{{homework.done}}</p>
         </button>
+        <div *ngIf="homework.statusID">
+        </div>
     </div>
 </div>

@@ -14,7 +14,7 @@ export class HomeworkService {
     return this.http.get<Homework[]>(`${this.apiServerUrl}/homework/all`);
     }
     public getHomeworksbyUserID(): Observable<Homework[]>{
-      return this.http.get<Homework[]>(`${this.apiServerUrl}/homework/findUser/${this.loginService.person?.userID}`);
+      return this.http.get<Homework[]>(`${this.apiServerUrl}/homework/findUser/${this.loginService.userID}`);
       }
 
     public addHomework(homework: Homework): Observable<Homework>{

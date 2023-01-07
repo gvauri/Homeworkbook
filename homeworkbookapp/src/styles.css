@@ -1,3 +1,13 @@
+#test{
+    background-color:#1aff00
+}
+#tour{
+    background-color:#079f79
+}
+.isDone{
+    text-decoration-color: red;
+    text-decoration-line: line-through;
+}
 .invisible{
     display: none;
 }
@@ -108,8 +118,10 @@ margin: 20px;
     border-radius:10px;
     width: 100%;
     display: grid;
-    grid-template-columns: 30% 50% 20%;
+    grid-template-columns: 30% 80% ;
     background-color:#05fabd;
+    margin: 0%;
+    padding: 0px;
 }
 .headerDay{
     display: flex;

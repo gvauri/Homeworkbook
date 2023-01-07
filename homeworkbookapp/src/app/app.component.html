@@ -1,4 +1,4 @@
-<div class="containerWeek"*ngIf="loginService.isLogedIn">
+<div class="containerWeek"*ngIf="loginService.isLogedIn ">
   <button (click)="lastWeek()" class="last">last</button>
   <div class="containerMain">
     <header class="headerMain">
@@ -8,17 +8,18 @@
       <nav class="navigation">
         <div class="buttonNav">
           <button class="navigationButton" (click)="modalService.open('modal-add');">add</button>
+          <button class="navigationButton" (click)="loginService.signOut()">signOut</button>
           <button class="navigationButton">Edit</button>
         </div>
       </nav>
     </header>
     <main class="mainMain" >
-        <app-day type="date" [day]="monday"></app-day>
-        <app-day type="date" [day]="tuesday"></app-day>
-        <app-day type="date" [day]="wednesday"></app-day>
-        <app-day type="date" [day]="thursday"></app-day>
-        <app-day type="date" [day]="friday"></app-day>
-        <app-day type="date" [day]="weekend"></app-day>
+        <app-day type="date" [day]="monday" [homeworks]="homeworks"></app-day>
+        <app-day type="date" [day]="tuesday" [homeworks]="homeworks"></app-day>
+        <app-day type="date" [day]="wednesday" [homeworks]="homeworks"></app-day>
+        <app-day type="date" [day]="thursday" [homeworks]="homeworks"></app-day>
+        <app-day type="date" [day]="friday" [homeworks]="homeworks"></app-day>
+        <app-day type="date" [day]="weekend" [homeworks]="homeworks"></app-day>
 
     </main>
     <footer class="footerMain">
@@ -34,6 +35,7 @@
   <button (click)="nextWeek()" class="next">next</button>
 </div>
 <div *ngIf="!loginService.isLogedIn">
+    {{loginService.getSession()}}
     {{modalService.open('modal-login')}}
 </div>
 
@@ -42,15 +44,18 @@
 <jw-modal id="modal-add" >
   <div class="PopUp">
     <h1 >ADD HOMEWORK</h1>
-    <form #addForm="ngForm" (ngSubmit)="addHomework(addForm)">
+    <form #addForm="ngForm" >
       <div class="flexContainer">
          <label for="dueDate">Due Date</label>
-         <input type="text" ngModel name="dueDate"  id="dueDate" placeholder="dueDate" required>
+         <input type="text" ngModel name="dueDate"  id="dueDate" placeholder="dueDate" #dueDate="ngModel" pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$" required>
+         <span *ngIf="dueDate.errors?.['pattern'] && dueDate.touched">
+          this is not a valid Date
+        </span>
       </div>
 
       <div class="flexContainer">
          <label for="statusID"> Status</label>
-         <select ngModel name="statusID" id="statusID" required>
+         <select ngModel="1" name="statusID"  id="statusID" #statusID="ngModel" placeholder="statusID" required>
           <option value=1>Homework</option>
           <option value=2>test</option>
           <option value=3>Tour</option>
@@ -59,19 +64,19 @@
     
       <div class="flexContainer">
         <label for="fach">subject</label>
-        <input type="text" ngModel name="fach"id="fach" placeholder="subject" required>
+        <input type="text" ngModel name="fach"  id="fach" #fach="ngModel" placeholder="fach" required>
      </div>
     
       <div class="flexContainer">
          <label for="description">description</label>
-         <input type="text" ngModel name="description"  id="description" placeholder="description" required>
+         <input type="text" ngModel name="description"  id="description" #description="ngModel" placeholder="description" required>
       </div>
     
       
-      <input type="hidden" ngModel="{{false}}" name="isDone" id="isDone">
-      <input type="hidden" ngModel="{{loginService.person?.userID}}" name="userID">
+      <input type="hidden" ngModel="{{false}}" name="done" id="done">
+      <input type="hidden" ngModel="{{loginService.userID}}" name="userID">
       <div class="buttonPopup">
-         <button [disabled]="addForm.invalid" type="submit" class="navigationButton" (click)="modalService.close('modal-add')">Save</button>
+         <button [disabled]="addForm.invalid" type="submit" class="navigationButton" (click)="modalService.close('modal-add'); addHomework(addForm.value);loginService.setUserId(); addForm.controls['description'].reset(); addForm.controls['fach'].reset(); addForm.controls['dueDate'].reset(); addForm.controls['statusID'].setValue(1)">Save</button>
       </div>
       </form>
   </div>
@@ -81,10 +86,13 @@
 <jw-modal id="modal-update" >
   <div class="PopUp">
     <h1 >UPDATE HOMEWORK</h1>
-    <form #editForm="ngForm">
+    <form #editForm="ngForm" >
       <div class="flexContainer">
          <label for="dueDate">Due Date</label>
-         <input type="text" ngModel="{{editHomework?.dueDate}}" name="dueDate"  id="dueDate" placeholder="dueDate" required>
+         <input type="text" ngModel="{{editHomework?.dueDate}}" name="dueDate"  id="dueDate" placeholder="dueDate" #dueDate="ngModel" pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$" required>
+         <span *ngIf="dueDate.errors?.['pattern'] && dueDate.touched">
+          this is not a valid Date
+        </span>
       </div>
 
       <div class="flexContainer">
@@ -104,6 +112,9 @@
       <div class="flexContainer">
          <label for="description">description</label>
          <input type="text" ngModel="{{editHomework?.description}}" name="description"  id="description" placeholder="description" required>
+         <span *ngIf="password.errors?.['pattern'] && email.touched && loginService.registrieren">
+          password is invalid
+        </span>
       </div>
     
       <div class="flexContainer">
@@ -111,7 +122,7 @@
          <input type="checkbox" ngModel="{{editHomework?.done}}" name="done" id="done">
       </div>
       <input type="hidden" ngModel="{{editHomework?.homeworkID}}" name="homeworkID" id="homeworkID">
-      <input type="hidden" ngModel="{{editHomework?.userID}}" name="userID" id="userID">
+      <input type="hidden" ngModel="{{loginService.userID}}" name="userID" id="userID">
       <input type="hidden" ngModel="{{editHomework?.addedDate}}" name="addedDate" id="addedDate">
       <div class="buttonPopup">
          <button  type="submit" class="navigationButton" (click)="modalService.close('modal-update'); updateHomework(editForm.value);">Save</button>
@@ -132,7 +143,10 @@
        </div>
         <div class="flexContainer">
            <label for="password">Password</label>
-           <input type="password" ngModel name="password"  id="password" placeholder="password" required>
+           <input type="password" ngModel name="password"  #password="ngModel" id="password" placeholder="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" required>
+           <span *ngIf="password.errors?.['pattern'] && password.touched && loginService.registrieren">
+            password is invalid
+          </span>
         </div>
       </div>
         <button (click)="loginService.changeRegister()" class="{{loginService.registrierenLinkClass}}">registrieren</button>
@@ -147,15 +161,18 @@
       </div>
       <div class="flexContainer">
         <label for="email">Email</label>
-        <input type="email" ngModel name="email"  id="email" placeholder="email@email.com" required>
+        <input type="email"  required #email="ngModel" name="email"  id="email" placeholder="email@email.com"  pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$" ngModel >
+        <span *ngIf="email.errors?.['pattern'] && email.touched">
+          Email is invalid
+        </span>
       </div>
       <input type="hidden" ngModel="{{true}}" name="registrieren">
       </div>
       <div class="buttonPopup">
-         <button  type="submit" class="navigationButton" (click)=" loginService.login(loginForm.value);">Save</button>
+         <button  type="submit" class="navigationButton" (click)=" loginService.login(loginForm.value); ">{{loginService.titelLogin}}</button>
       </div>
       </form>
-      {{loginService.registrieren}}
-      {{loginService.isLogedIn}}
   </div>
 </jw-modal>
+
+

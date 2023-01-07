@@ -6,6 +6,7 @@ import { ModalService } from './_modal';
 import {FormGroup, FormControl, NgForm} from '@angular/forms';
 import { LoginService } from './login.service';
 import { DayComponent } from './day/day.component';
+import { MatSnackBarLabel } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,14 +15,14 @@ import { DayComponent } from './day/day.component';
 
 
 export class AppComponent implements OnInit {
-  userID = 1;
   public editHomeworkid = 0;
   public editHomework?: Homework;
   public homeworks: Homework[] = [];  
   updateForm: any;
+  person: any;
   constructor(private homeworkService: HomeworkService, public modalService: ModalService, public loginService: LoginService) { };
   ngOnInit(): void {
-    this.getHomeworks();
+    
   }
   today = new Date();
   startDate = new Date(this.today.getFullYear(),0,1);
@@ -41,6 +42,9 @@ export class AppComponent implements OnInit {
   });
   public nextWeek():void{
     this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+7);
+    this.startDate = new Date(this.today.getFullYear(),0,1);
+    this.days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
+    this.week = Math.ceil(this.days / 7);
     this.monday = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+1-this.today.getDay());
     this.tuesday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+1);
     this.wednesday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+2);
@@ -50,6 +54,9 @@ export class AppComponent implements OnInit {
   }
   public lastWeek():void{
     this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()-7);
+    this.startDate = new Date(this.today.getFullYear(),0,1);
+    this.days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
+    this.week = Math.ceil(this.days / 7);
     this.monday = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+1-this.today.getDay());
     this.tuesday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+1);
     this.wednesday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+2);
@@ -59,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   public getHomeworks():void  {
-    this.homeworkService.getHomeworks().subscribe(
+    this.homeworkService.getHomeworksbyUserID().subscribe(
       (response : Homework[]) => {
         this.homeworks = response;
       },
@@ -69,17 +76,15 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public addHomework(addForm: NgForm):void{
+  public addHomework(homework: Homework):void{
     document.getElementById('add-homework-form')?.click()
-    this.homeworkService.addHomework(addForm.value).subscribe(
+    this.homeworkService.addHomework(homework).subscribe(
       (response: Homework) => {
         console.log(response);
         this.getHomeworks();
-        addForm.reset();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
-        addForm.reset();
       }
     );
   }
