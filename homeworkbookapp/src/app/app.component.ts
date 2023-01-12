@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Homework } from './homework';
 import { HomeworkService } from './homework.service';
 import { ModalService } from './_modal';
@@ -15,15 +15,32 @@ import { MatSnackBarLabel } from '@angular/material/snack-bar';
 
 
 export class AppComponent implements OnInit {
+  public stateWindow = 0;
   public editHomeworkid = 0;
   public editHomework?: Homework;
   public homeworks: Homework[] = [];  
   updateForm: any;
   person: any;
+  public getScreenWidth: any;
+  public getScreenHeight: any;
   constructor(private homeworkService: HomeworkService, public modalService: ModalService, public loginService: LoginService) { };
+
   ngOnInit(): void {
-    
+    this.loginService.getSession()
+    this.getScreenWidth = window.innerWidth;
+      this.getScreenHeight = window.innerHeight;
   }
+
+  public stringToBoolean():boolean{
+      return false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.getScreenHeight = window.innerHeight;
+  }
+  
   today = new Date();
   startDate = new Date(this.today.getFullYear(),0,1);
   days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
@@ -41,6 +58,7 @@ export class AppComponent implements OnInit {
     end: new FormControl<Date | null>(null),
   });
   public nextWeek():void{
+    if(this.stateWindow == 0){
     this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+7);
     this.startDate = new Date(this.today.getFullYear(),0,1);
     this.days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
@@ -51,8 +69,16 @@ export class AppComponent implements OnInit {
     this.thursday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+3);
     this.friday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+4);
     this.weekend =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+5);
+  }else if(this.stateWindow == 1){
+    this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+1);
+    if(this.today.getDay() == 0){
+      this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+1); 
+
+    }
+  }
   }
   public lastWeek():void{
+    if(this.stateWindow == 0){
     this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()-7);
     this.startDate = new Date(this.today.getFullYear(),0,1);
     this.days = Math.floor((this.today.getTime() - this.startDate.getTime()) /(24 * 60 * 60 * 1000));
@@ -63,6 +89,13 @@ export class AppComponent implements OnInit {
     this.thursday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+3);
     this.friday =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+4);
     this.weekend =new Date(this.monday.getFullYear(), this.monday.getMonth(), this.monday.getDate()+5);
+  }else if(this.stateWindow == 1){
+    this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()-1); 
+    if(this.today.getDay() == 0){
+      this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()-1); 
+
+    }
+  }
   }
 
   public getHomeworks():void  {
@@ -111,5 +144,4 @@ export class AppComponent implements OnInit {
       }
     );
   }
-  
 }

@@ -46,6 +46,14 @@ export class DayComponent implements OnInit{
     return new Date( Number(year), Number(month)-1, Number(day));
   }
 
+  public shorter(longText:string, size: number ):string{
+    let shortText : string = "";
+    for(let i = 0; i < 20 ; i++){
+      shortText += longText.charAt(i)
+    }
+    return shortText;
+  }
+
   ngOnInit(): void {
     this.appComponent;
     this.getHomeworks();

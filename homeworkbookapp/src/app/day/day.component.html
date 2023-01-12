@@ -3,11 +3,17 @@
         <h3>{{weekdays[day.getDay()-1]}}    {{day | date: 'dd.MM.yy'}}</h3>
     </div>
 </div>
-<div *ngFor="let homework of homeworks">
-    <div *ngIf="day.getFullYear() == convertToDate(homework.dueDate.toString()).getFullYear()  &&  day.getDate() == convertToDate(homework.dueDate.toString()).getDate()  &&  day.getMonth() == convertToDate(homework.dueDate.toString()).getMonth()">
+<div *ngFor="let homework of homeworks" class="oneday">
+    <div *ngIf="day.getFullYear() == convertToDate(homework.dueDate.toString()).getFullYear()  &&  day.getDate() == convertToDate(homework.dueDate.toString()).getDate()  &&  day.getMonth() == convertToDate(homework.dueDate.toString()).getMonth()" >
         <button class="homework {{setClassIsDone(homework.done)}}" id="{{setClassHomework(homework.statusID)}}" (click)=" setEditHomework(homework);" >
             <p>{{homework.fach}}</p>
-            <p>{{homework.description}}</p>
+            <div *ngIf="homework.description.length <= 20">
+                <p>{{homework.description}}</p>
+            </div>
+            <div *ngIf="homework.description.length > 20">
+                <p>{{shorter(homework.description, 20) }}...</p>
+            </div>
+            
         </button>
         <div *ngIf="homework.statusID">
         </div>

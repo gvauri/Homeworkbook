@@ -1,5 +1,5 @@
 <div class="containerWeek"*ngIf="loginService.isLogedIn ">
-  <button (click)="lastWeek()" class="last">last</button>
+  <button (click)="lastWeek()" class="last"><img src="./../assets/image/arrowBack.png" alt="button to last week"></button>
   <div class="containerMain">
     <header class="headerMain">
       <div class="titel">
@@ -8,20 +8,22 @@
       <nav class="navigation">
         <div class="buttonNav">
           <button class="navigationButton" (click)="modalService.open('modal-add');">add</button>
-          <button class="navigationButton" (click)="loginService.signOut()">signOut</button>
-          <button class="navigationButton">Edit</button>
+          <button class="navigationButton" (click)="loginService.signOut()">sign out</button>
+          <button class="navigationButton" (click)="modalService.open('modal-edit')">edit</button>
         </div>
       </nav>
     </header>
-    <main class="mainMain" >
+    <main class="mainMain" *ngIf="getScreenWidth > 600">
         <app-day type="date" [day]="monday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="tuesday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="wednesday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="thursday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="friday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="weekend" [homeworks]="homeworks"></app-day>
-
     </main>
+    <main class="mainMainDay" *ngIf="getScreenWidth <= 600">
+      <app-day type="date" [day]="today" [homeworks]="homeworks"></app-day>
+  </main>
     <footer class="footerMain">
       <div class="footerText">
         <p>Developed by Aurel Schmid</p>
@@ -31,13 +33,15 @@
       </div>
     </footer>
   </div>
-
-  <button (click)="nextWeek()" class="next">next</button>
+  <button (click)="nextWeek()" class="next"><img src="./../assets/image/arrowForward.png" alt="button to next Week"></button>
 </div>
+
 <div *ngIf="!loginService.isLogedIn">
-    {{loginService.getSession()}}
     {{modalService.open('modal-login')}}
 </div>
+
+
+
 
 
 
@@ -119,7 +123,8 @@
     
       <div class="flexContainer">
          <label for="isDone">is Done</label>
-         <input type="checkbox" ngModel="{{editHomework?.done}}" name="done" id="done">
+         <input type="checkbox" ngModel="{{editHomework?.done}}" name="done" id="done" >
+         {{editHomework?.done}}
       </div>
       <input type="hidden" ngModel="{{editHomework?.homeworkID}}" name="homeworkID" id="homeworkID">
       <input type="hidden" ngModel="{{loginService.userID}}" name="userID" id="userID">
@@ -176,3 +181,20 @@
 </jw-modal>
 
 
+<jw-modal id="modal-edit" >
+  <div class="PopUp">
+    <h1 >UPDATE HOMEWORK</h1>
+    <form #editForm="ngForm" >
+      <div class="flexContainer">
+        <label for="statusID"> Status</label>
+        <select value = "{{stateWindow}}" name="view"  id="view" required>
+         <option value=0>one Week</option>
+         <option value=1>one Day</option>
+       </select>
+     </div>
+      <div class="buttonPopup">
+         <button  type="submit" class="navigationButton" (click)="modalService.close('modal-edit');">Save</button>
+      </div>
+      </form>
+  </div>
+</jw-modal>
