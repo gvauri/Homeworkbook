@@ -13,7 +13,7 @@
         </div>
       </nav>
     </header>
-    <main class="mainMain" *ngIf="getScreenWidth > 600">
+    <main class="mainMain" *ngIf="edit.stateWindow == 0">
         <app-day type="date" [day]="monday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="tuesday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="wednesday" [homeworks]="homeworks"></app-day>
@@ -21,7 +21,7 @@
         <app-day type="date" [day]="friday" [homeworks]="homeworks"></app-day>
         <app-day type="date" [day]="weekend" [homeworks]="homeworks"></app-day>
     </main>
-    <main class="mainMainDay" *ngIf="getScreenWidth <= 600">
+    <main class="mainMainDay" *ngIf="edit.stateWindow == 1">
       <app-day type="date" [day]="today" [homeworks]="homeworks"></app-day>
   </main>
     <footer class="footerMain">
@@ -184,16 +184,16 @@
 <jw-modal id="modal-edit" >
   <div class="PopUp">
     <h1 >UPDATE HOMEWORK</h1>
-    <form #editForm="ngForm" >
+    <form #settingsForm="ngForm" >
       <div class="flexContainer">
         <label for="statusID"> Status</label>
-        <select value = "{{stateWindow}}" name="view"  id="view" required>
+        <select ngModel="{{edit.stateWindow}}" name="stateWindow" id="stateWindow" required>
          <option value=0>one Week</option>
          <option value=1>one Day</option>
        </select>
      </div>
       <div class="buttonPopup">
-         <button  type="submit" class="navigationButton" (click)="modalService.close('modal-edit');">Save</button>
+         <button  type="submit" class="navigationButton" (click)="modalService.close('modal-edit'); editSettings(settingsForm.value)">Save</button>
       </div>
       </form>
   </div>

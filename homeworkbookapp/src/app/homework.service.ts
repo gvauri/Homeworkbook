@@ -10,9 +10,6 @@ export class HomeworkService {
 
   constructor(private http: HttpClient, private loginService: LoginService) { };
 
-  public getHomeworks(): Observable<Homework[]>{
-    return this.http.get<Homework[]>(`${this.apiServerUrl}/homework/all`);
-    }
     public getHomeworksbyUserID(): Observable<Homework[]>{
       return this.http.get<Homework[]>(`${this.apiServerUrl}/homework/findUser/${this.loginService.userID}`);
       }
@@ -23,10 +20,6 @@ export class HomeworkService {
 
     public updateHomework(homework: Homework): Observable<Homework>{
       return this.http.put<Homework>(`${this.apiServerUrl}/homework/update`, homework);
-      }
-
-    public deleteHomework(homeworkid: number): Observable<void>{
-      return this.http.delete<void>(`${this.apiServerUrl}/homework/delete/${homeworkid}`);
       }
 
     public getHomeworkByID(homeworkID: number): Observable<Homework>{
